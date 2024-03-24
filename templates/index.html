@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="/static/stylesheet1.css">
 </head>
 <body>
-    <div class="navbar">
-        <a href="{{ processed_image }}" download="processed_image.jpg"><button class="download-button">Download</button></a>
-        <img src="/static/logo2.png" alt="Logo" class="navbar-logo">
+    <header class="navbar">
+        <a href="/">
+            <img src="/static/logo2.png" alt="Logo" class="navbar-logo">
+        </a>
         <h1 class="navbar-title">Image Filters</h1>
-    </div>
-    <div class="container">
-        <div class="form-container">
+        <a href="{{ processed_image }}" download="processed_image.jpg">
+            <button class="download-button">Download</button>
+        </a>
+    </header>
+    
+    <main class="container">
+        <section class="form-container">
             <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
                 <label for="file-input">Choose an image:</label>
                 <input type="file" id="file-input" name="file" accept="image/*" required>
@@ -31,11 +36,11 @@
                 <select name="aspect-ratio" id="aspect-ratio">
                     <option value="16:9">16:9</option>
                     <option value="4:3">4:3</option>
-                    <option value="2.35:1">2.35:1</option>
-                    <option value="2:1">2:1</option>
+                    <option value="21:9">21:9</option>
                     <option value="9:16">9:16</option>
                     <option value="3:4">3:4</option>
-                    <option value="1.85:1">1.85:1</option>
+                    <option value="3:2">3:2</option>
+                    <option value="5:4">5:4</option>
                     <option value="1:1">1:1</option>
                     <option value="custom">Custom</option>
                 </select>
@@ -99,47 +104,19 @@
                 
                 <button type="submit">Apply Filters</button>
             </form>
-        </div>
-        <div class="rigid-box">
+        </section>
+        <section class="rigid-box">
             {% if processed_image %}
-            <!-- <div>
-                <button onclick="window.location.href='/undo'">Undo</button>
-                <button onclick="window.location.href='/redo'">Redo</button>
-            </div> -->
+            
             <div class="image-wrapper">
                 <img src="{{ processed_image }}" alt="Processed Image" id="processed-image">
             </div>
             <!-- Download button -->
         {% endif %}
-        </div>
-        </div>
-
-    <script>
-        document.getElementById("aspect-ratio").addEventListener("change", function() {
-            var customXInput = document.getElementById("custom-x");
-            var customYInput = document.getElementById("custom-y");
-            if (this.value === "custom") {
-                customXInput.style.display = "inline-block";
-                customYInput.style.display = "inline-block";
-            } else {
-                customXInput.style.display = "none";
-                customYInput.style.display = "none";
-            }
-        });
-                // Assuming you have the aspect ratio value stored in a variable called uploadedAspectRatio
-    // Set the default selected option based on the uploaded image aspect ratio
-    var uploadedAspectRatio = ""; // You need to assign the actual aspect ratio value here
-
-    // Find the option element with the uploaded aspect ratio and set it as selected
-    var aspectRatioSelect = document.getElementById("aspect-ratio");
-    var options = aspectRatioSelect.options;
-    for (var i = 0; i < options.length; i++) {
-        if (options[i].value === uploadedAspectRatio) {
-            options[i].setAttribute("selected", "selected");
-            break;
-        }
-    }
-
-    </script>
+        </section>
+        
+        <!-- <button onclick="window.location.href='/undo'">Undo</button>
+        <button onclick="window.location.href='/redo'">Redo</button> -->
+        </main>
 </body>
 </html>
