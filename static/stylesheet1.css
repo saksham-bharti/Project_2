@@ -8,33 +8,41 @@ body {
     flex-direction: column;
     min-height: 100vh;
     font-size: 14px; /* Adjust font size */
-    background-color: #a19d9d;
+    background-color: #E3E1D9;
 }
 .navbar {
     background: linear-gradient(to right, #67C6E3, #5356FF);
+    /* background-color: #81689D; */
     color: #fff;
-    padding: 10px 15px; /* Adjust padding */
+    padding: 7px 10px; /* Adjust padding */
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 .navbar-logo {
-position: absolute;
-width: 150px;
+/* position: relative; */
+width: 110px;
+margin-left: 19px;
 }
 .navbar-title {
     font-size: 1.2rem;
+    margin: 0 1rem;
     
 }
 .download-button {
-    background-color: #4caf50;
-    color: #fff;
+    /* position: absolute; */
+    /* top: 70px; */
+    /* right: 200px; */
+    padding: 8px 50px;
+    color: white;
+    border: 2px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-}
+    background-color: #3498db;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 5px;
+
+  }
 
 .download-button:hover {
     background-color: #45a049;
@@ -52,7 +60,7 @@ width: 150px;
     padding: 10px; /* Add padding */
     justify-content: center; /* Center align content horizontally */
     align-items: center;
-    border: 5px solid #131212;
+    border: 6px solid #ffffff;
 }
 
 /* .form-group {
@@ -64,12 +72,12 @@ h1, h2 {
     font-size: 1.1rem; /* Adjust heading sizes */
 }
 form {
-    margin-top: 10px; /* Adjust margin */
+    margin-top: 5px; /* Adjust margin */
     margin-left: 0px;
 }
 label {
     display: block;
-    margin-bottom: 6px; /* Adjust margin */
+    margin-bottom: 4px; /* Adjust margin */
     color: #555;
     font-size: 0.9rem; /* Adjust font size */
 }
@@ -113,16 +121,21 @@ button:hover {
     overflow: hidden;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
     margin-left: 50px;
 }
 
 .image-wrapper {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 15px; /* Adjusted to account for padding */
+    left: 15px; /* Adjusted to account for padding */
+    right: 15px; /* Adjusted to account for padding */
+    bottom: 15px;
+    /* width: 100%;
+    height: 100%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .image-wrapper img {
