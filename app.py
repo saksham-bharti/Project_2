@@ -13,6 +13,10 @@ history = []
 current_state_index = -1  # Initialize current state index for undo/redo
 
 @app.route('/')
+def welcome():
+    return render_template('welcome.html')
+
+@app.route('/index.html')
 def index():
     return render_template('index.html', uploaded_image=uploaded_image_data)
 
@@ -87,7 +91,11 @@ def apply_filters(img, form_data):
         # Apply rotation filter
         if 'rotate' in form_data and form_data['rotate']:
             angle = int(form_data['rotate'])
-            img = img.rotate(angle, expand=True)
+            # Create a new image with a transparent background
+            transparent_img = Image.new('RGBA', img.size, (255, 255, 255, 0))
+            # Paste the rotated image onto the transparent background
+            transparent_img.paste(img.rotate(angle, expand=True), (0, 0), img.rotate(angle, expand=True))
+            img = transparent_img
 
         # Apply blur filter
         if 'blur' in form_data and form_data['blur']:
