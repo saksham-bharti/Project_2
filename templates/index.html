@@ -24,7 +24,14 @@
                 <input type="file" id="file-input" name="file" accept="image/*" required>
                 
                 <label for="rotate">Rotate:</label>
-                <input type="range" name="rotate" id="rotate" min="-360" max="360" value="0">
+                <input type="range" name="rotate" id="rotate" min="-360" max="360" value="0" list="tickmarks">
+                <datalist id="tickmarks">
+                    <option value="-360"></option>
+                    <option value="-180"></option>
+                    <option value="0"></option>
+                    <option value="180"></option>
+                    <option value="360"></option>
+                </datalist>
                 
                 <label for="blur">Blur:</label>
                 <input type="range" name="blur" id="blur" min="0" max="100" value="0">
@@ -32,8 +39,9 @@
                 <label for="brightness">Brightness:</label>
                 <input type="range" name="brightness" id="brightness" min="-100" max="100" value="0">
                
-                <label for="aspect-ratio">Aspect Ratio:</label>
+                <label for="aspect-ratio">Crop:</label>
                 <select name="aspect-ratio" id="aspect-ratio">
+                    <option value="custom">Custom</option>
                     <option value="16:9">16:9</option>
                     <option value="4:3">4:3</option>
                     <option value="21:9">21:9</option>
@@ -42,7 +50,6 @@
                     <option value="3:2">3:2</option>
                     <option value="5:4">5:4</option>
                     <option value="1:1">1:1</option>
-                    <option value="custom">Custom</option>
                 </select>
                 <input type="number" name="custom-x" id="custom-x" placeholder="Custom X" style="display: none;">
                 <input type="number" name="custom-y" id="custom-y" placeholder="Custom Y" style="display: none;">                
@@ -79,7 +86,7 @@
                     <option value="gist_ncar">Gist Ncar</option>
                 </select>
 
-                <label for="text">Text:</label>
+                <label for="text">Add text:</label>
                 <input type="text" name="text" id="text">
                 
                 <label for="text-x" style="display: inline-block; width: 80px;">Text X:</label>
