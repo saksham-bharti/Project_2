@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_file
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
+from PIL import Image, ImageDraw, ImageFilter, ImageEnhance, ImageFont
 import io
 import base64
 import traceback
@@ -91,11 +91,7 @@ def apply_filters(img, form_data):
         # Apply rotation filter
         if 'rotate' in form_data and form_data['rotate']:
             angle = int(form_data['rotate'])
-            # Create a new image with a transparent background
-            transparent_img = Image.new('RGBA', img.size, (255, 255, 255, 0))
-            # Paste the rotated image onto the transparent background
-            transparent_img.paste(img.rotate(angle, expand=True), (0, 0), img.rotate(angle, expand=True))
-            img = transparent_img
+            img = img.rotate(angle, expand=True)
 
         # Apply blur filter
         if 'blur' in form_data and form_data['blur']:
@@ -120,7 +116,6 @@ def apply_filters(img, form_data):
             try:
                 cmap_path = f"cmap/{color_tone}.png"
                 with Image.open(cmap_path) as cmap_image:
-                    # Resize cmap_image to match img dimensions
                     if img.size != cmap_image.size:
                         cmap_image = cmap_image.resize(img.size, Image.ANTIALIAS)
                     img = Image.blend(img, cmap_image, alpha=0.5)
@@ -136,7 +131,6 @@ def apply_filters(img, form_data):
             font_size = int(form_data.get('font-size', 20))
             font_type = form_data.get('font-type', 'arial.ttf')
 
-            # Initialize font object with default style
             font = ImageFont.truetype(font_type, font_size)
 
             draw = ImageDraw.Draw(img)
@@ -145,10 +139,13 @@ def apply_filters(img, form_data):
         # Apply adjustments
         img = adjust_image(img, form_data)
 
-    except ValueError as e:
-        return f"Error occurred while processing image: {e}"
+        return img  # Return the processed image
 
-    return img
+    except ValueError as e:
+        raise ValueError(f"Error occurred while processing image: {e}")  # Raise exception with the error message
+
+    except Exception as e:
+        raise e  # Re-raise any other exception
 
 def crop_image(img, x_ratio, y_ratio):
     width, height = img.size
@@ -156,13 +153,11 @@ def crop_image(img, x_ratio, y_ratio):
     current_ratio = Fraction(width, height)
 
     if current_ratio > desired_ratio:
-        # Current image is wider than desired ratio, crop the sides
         new_width = int(height * desired_ratio)
         left = (width - new_width) // 2
         right = width - (width - new_width) // 2
         img = img.crop((left, 0, right, height))
     elif current_ratio < desired_ratio:
-        # Current image is taller than desired ratio, crop the top and bottom
         new_height = int(width / desired_ratio)
         top = (height - new_height) // 2
         bottom = height - (height - new_height) // 2
@@ -171,15 +166,12 @@ def crop_image(img, x_ratio, y_ratio):
     return img
 
 def adjust_image(img, form_data):
-
-    # Adjust brightness
     brightness = int(form_data.get('brightness', 0))
     img = ImageEnhance.Brightness(img).enhance(1 + brightness / 100)
 
     return img
 
 def img_to_base64(img):
-    # Convert image to RGB mode if it's RGBA
     if img.mode == 'RGBA':
         img = img.convert('RGB')
     img_io = io.BytesIO()
