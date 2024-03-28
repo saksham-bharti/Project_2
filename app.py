@@ -95,18 +95,27 @@ def apply_filters(img, form_data):
 
         # Apply blur filter
         if 'blur' in form_data and form_data['blur']:
-            radius = int(form_data['blur'])
-            img = img.filter(ImageFilter.GaussianBlur(radius))
+            try:
+                radius = int(form_data['blur'])
+                img = img.filter(ImageFilter.GaussianBlur(radius))
+            except ValueError:
+                pass  # Ignore if the blur radius is not a valid integer
 
         # Apply crop filter
         crop_ratio = form_data.get('aspect-ratio')
         if crop_ratio == 'custom':
-            x = int(form_data.get('custom-x', 0))
-            y = int(form_data.get('custom-y', 0))
-            img = crop_image(img, x, y)
-        else:
-            x, y = map(int, crop_ratio.split(':'))
-            img = crop_image(img, x, y)
+            try:
+                x = int(form_data.get('custom-x', 0))
+                y = int(form_data.get('custom-y', 0))
+                img = crop_image(img, x, y)
+            except ValueError:
+                pass  # Ignore if custom crop dimensions are not valid integers
+        elif crop_ratio:
+            try:
+                x, y = map(int, crop_ratio.split(':'))
+                img = crop_image(img, x, y)
+            except (ValueError, AttributeError):
+                pass  # Ignore if aspect ratio is not provided or not valid
 
         # Apply color tone filter
         color_tone = form_data.get('color-tone', 'normal')
@@ -125,16 +134,19 @@ def apply_filters(img, form_data):
         # Add text to the image
         if 'text' in form_data and form_data['text']:
             text = form_data['text']
-            x = int(form_data.get('text-x', 0))
-            y = int(form_data.get('text-y', 0))
-            color = form_data.get('text-color', 'black')
-            font_size = int(form_data.get('font-size', 20))
-            font_type = form_data.get('font-type', 'arial.ttf')
+            try:
+                x = int(form_data.get('text-x', 0))
+                y = int(form_data.get('text-y', 0))
+                color = form_data.get('text-color', 'black')
+                font_size = int(form_data.get('font-size', 20))
+                font_type = form_data.get('font-type', 'arial.ttf')
 
-            font = ImageFont.truetype(font_type, font_size)
+                font = ImageFont.truetype(font_type, font_size)
 
-            draw = ImageDraw.Draw(img)
-            draw.text((x, y), text, fill=color, font=font)
+                draw = ImageDraw.Draw(img)
+                draw.text((x, y), text, fill=color, font=font)
+            except ValueError:
+                pass  # Ignore if text coordinates or font size are not valid integers
 
         # Apply adjustments
         img = adjust_image(img, form_data)
@@ -146,6 +158,7 @@ def apply_filters(img, form_data):
 
     except Exception as e:
         raise e  # Re-raise any other exception
+
 
 def crop_image(img, x_ratio, y_ratio):
     width, height = img.size
