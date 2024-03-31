@@ -132,25 +132,25 @@ def apply_filters(img, form_data):
                 pass  # Ignore if the lookup table image is not found
         
         # Add text to the image
-       if 'text' in form_data and form_data['text']:
-        text = form_data['text']
-        try:
-            x = int(form_data.get('text-x', 0))
-            y = int(form_data.get('text-y', 0))
-            color = form_data.get('text-color', 'black')
-            font_size = int(form_data.get('font-size', 20))
-            font_type = form_data.get('font-type', 'arial.ttf')
-    
+        if 'text' in form_data and form_data['text']:
+            text = form_data['text']
             try:
-                font = ImageFont.truetype(font_type, font_size)
-            except IOError:
-                # Fallback to a default font if the specified font cannot be loaded
-                font = ImageFont.load_default()  # Or specify another fallback font
-    
-            draw = ImageDraw.Draw(img)
-            draw.text((x, y), text, fill=color, font=font)
-        except ValueError:
-            pass  # Ignore if text coordinates or font size are not valid integers
+                x = int(form_data.get('text-x', 0))
+                y = int(form_data.get('text-y', 0))
+                color = form_data.get('text-color', 'black')
+                font_size = int(form_data.get('font-size', 20))
+                font_type = form_data.get('font-type', 'arial.ttf')
+        
+                try:
+                    font = ImageFont.truetype(font_type, font_size)
+                except IOError:
+                    # Fallback to a default font if the specified font cannot be loaded
+                    font = ImageFont.load_default()  # Or specify another fallback font
+        
+                draw = ImageDraw.Draw(img)
+                draw.text((x, y), text, fill=color, font=font)
+            except ValueError:
+                pass  # Ignore if text coordinates or font size are not valid integers
 
 
         # Apply adjustments
