@@ -126,7 +126,7 @@ def apply_filters(img, form_data):
                 cmap_path = f"cmap/{color_tone}.png"
                 with Image.open(cmap_path) as cmap_image:
                     if img.size != cmap_image.size:
-                        cmap_image = cmap_image.resize(img.size, resample=Image.ANTIALIAS)
+                        cmap_image = cmap_image.resize(img.size, resample=Image.BICUBIC)
                     img = Image.blend(img, cmap_image, alpha=0.5)
             except FileNotFoundError:
                 pass  # Ignore if the lookup table image is not found
